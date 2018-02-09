@@ -89,7 +89,7 @@ int main( int argc, char **argv )
 
 			cout << "\n A Client is connected " << endl;
 
-			while(1) {
+			while(true) {
 
 				/** Monitoring entries */
 				FD_ZERO( &rfds );

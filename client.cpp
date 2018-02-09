@@ -26,7 +26,7 @@ int main( int argc, char ** argv )
 	int  sock;
 	int  retval;
 
-	fd_set rfds,wfds;
+	fd_set rfds;
 
 	/** sockets, server and client */
 	struct sockaddr_in srv_addr;
@@ -35,11 +35,12 @@ int main( int argc, char ** argv )
 
 	/** socket reserved */
 	if( ( sock = socket( AF_INET, SOCK_STREAM, 0 ) ) == -1 ) {
+
 		printf("\n socket : error \n");
 		exit(-1);
 	}
 
-	/** socket type */
+	/** socket type sys socket*/
 	srv_addr.sin_family      = AF_INET;
 
 	/** socket port */
@@ -53,7 +54,7 @@ int main( int argc, char ** argv )
 
 	cout<<"Server connection (" << argv[1] << ")...";
 
-	// connecte au serveur
+	/** co necting to server */
 	if( ( connect( sock, ( struct sockaddr * ) &srv_addr, sizeof( struct sockaddr ) ) ) == -1 )
 	{
 		printf("\n connect : error \n");
@@ -64,7 +65,7 @@ int main( int argc, char ** argv )
 
 	while(1) {
 
-	/* Monitoring entries */
+	/* Monitoring entries sys types */
 	FD_ZERO( &rfds );
 
 	/** sockets */
@@ -87,21 +88,22 @@ int main( int argc, char ** argv )
 				break;
 
 			default:
-				if( FD_ISSET( sock, &rfds ) ) {
+			if( FD_ISSET( sock, &rfds ) ) {
 
-					if( (recv( sock, msg, sizeof( msg ), 0 ) ) == -1) {
+				if( ( recv( sock, msg, sizeof( msg ), 0 ) ) == -1 ) {
 
-						printf("\n recv : error \n");
-						exit(-1);
-					}
-
-					//cout << "\n Server says : " << msg << endl;
-
-					if( !strcmp( msg, "exit" ) ) {
-						goto quit;
-					}
-					break;
+					printf("\n recv : error \n");
+					exit(-1);
 				}
+
+				//cout << "\n Server says : " << msg << endl;
+
+				if( !strcmp( msg, "exit" ) ) {
+
+					goto quit;
+				}
+				break;
+			}
 				if( FD_ISSET( 0, &rfds ) ) {
 
 					cin.getline( msg, 256 );

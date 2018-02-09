@@ -54,7 +54,7 @@ int main( int argc, char ** argv )
 
 	cout<<"Server connection (" << argv[1] << ")...";
 
-	/** co necting to server */
+	/** connecting to server */
 	if( ( connect( sock, ( struct sockaddr * ) &srv_addr, sizeof( struct sockaddr ) ) ) == -1 )
 	{
 		printf("\n connect : error \n");
@@ -63,13 +63,13 @@ int main( int argc, char ** argv )
 
 	cout<<"\n OK " << endl;
 
-	while(1) {
+	while(true) {
 
 	/* Monitoring entries sys types */
-	FD_ZERO( &rfds );
+	//FD_ZERO( &rfds );
 
 	/** sockets */
-	FD_SET( sock, &rfds ); /* socket */
+	FD_SET( sock, &rfds );
 
 	/** keyboard inputs */
 	FD_SET( 0, &rfds );

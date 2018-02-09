@@ -13,7 +13,6 @@ using namespace std;
 
 int main( int argc, char **argv )
 {
-	//strcpy(msg,"malik\0");
 
 	/** sockets handlers */
 	int  sock;
@@ -26,7 +25,7 @@ int main( int argc, char **argv )
 	int  max_clients = 20;
 	int  retval;
 
-	fd_set rfds,wfds;
+	fd_set rfds;
 
 	struct timeval tv;
 

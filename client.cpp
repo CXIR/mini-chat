@@ -96,6 +96,8 @@ int main( int argc, char ** argv )
 					exit(-1);
 				}
 
+
+				/** this part has an issue, each problem is displayed infinitly*/
 				//cout << "\n Server says : " << msg << endl;
 
 				if( !strcmp( msg, "exit" ) ) {

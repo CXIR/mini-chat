@@ -10,36 +10,46 @@
 
 using namespace std;
 
-#define MY_PORT 7000
+#define MY_PORT 3000
 
-int main (int argc,char ** argv )
+int main( int argc, char ** argv )
 {
-	if ( argc < 1 )
-	{
-		cout<<"\n Parametre manquant,adresse ip format: x.x.x.x\n";
+	if ( argc < 1 ) {
+
+		cout<<"\n Missing IP Adress (x.x.x.x) " << endl;
 		exit(EXIT_SUCCESS);
 	}
 
-	char msg[256];			// buffer
-	int  sock;		// handles de socket
+	/** buffer, sent message */
+	char msg[256];
+	/** socket handler */
+	int  sock;
 	int  retval;
 
 	fd_set rfds,wfds;
 
+	/** sockets, server and client */
 	struct sockaddr_in srv_addr;
 	struct sockaddr_in cl_addr;
 	struct timeval     tv;
 
-	if( ( sock = socket( AF_INET, SOCK_STREAM, 0 ) ) == -1 )	// reserve socket
-	{
+	/** socket reserved */
+	if( ( sock = socket( AF_INET, SOCK_STREAM, 0 ) ) == -1 ) {
 		printf("\n socket : error \n");
 		exit(-1);
 	}
 
-	srv_addr.sin_family      = AF_INET;		// type
-	srv_addr.sin_port        = htons(MY_PORT);	// port 3000 (arbitraire)
-	srv_addr.sin_addr.s_addr = inet_addr(argv[1]);	// mon addresse
-	memset( &( srv_addr.sin_zero ), '\0', 8 );	// mise a 0
+	/** socket type */
+	srv_addr.sin_family      = AF_INET;
+
+	/** socket port */
+	srv_addr.sin_port        = htons(MY_PORT);
+
+	/** socket address */
+	srv_addr.sin_addr.s_addr = inet_addr(argv[1]);
+
+	/** set to zero */
+	memset( &( srv_addr.sin_zero ), '\0', 8 );
 
 	cout<<"Server connection (" << argv[1] << ")...";
 
@@ -50,17 +60,24 @@ int main (int argc,char ** argv )
 		exit(-1);
 	};
 
-	cout<<" OK \n";
+	cout<<"\n OK " << endl;
 
 	while(1) {
-	/* Surveiller les entrées */
+
+	/* Monitoring entries */
 	FD_ZERO( &rfds );
+
+	/** sockets */
 	FD_SET( sock, &rfds ); /* socket */
-	FD_SET( 0, &rfds );    /* clavier */
-	tv.tv_sec = 0; 	     /* temps */
+
+	/** keyboard inputs */
+	FD_SET( 0, &rfds );
+
+	/** time */
+	tv.tv_sec = 0;
 	tv.tv_usec = 0;
+
 	retval = select( sock+1, &rfds, NULL, NULL, &tv );
-	/* Considérer tv comme indéfini maintenant ! */
 
 		switch( retval ) {
 
@@ -70,7 +87,6 @@ int main (int argc,char ** argv )
 				break;
 
 			default:
-
 				if( FD_ISSET( sock, &rfds ) ) {
 
 					if( (recv( sock, msg, sizeof( msg ), 0 ) ) == -1) {
@@ -79,7 +95,7 @@ int main (int argc,char ** argv )
 						exit(-1);
 					}
 
-					cout<<"\n Server says : " << msg;
+					//cout << "\n Server says : " << msg << endl;
 
 					if( !strcmp( msg, "exit" ) ) {
 						goto quit;
@@ -95,7 +111,7 @@ int main (int argc,char ** argv )
 						printf("\n send : error \n");
 						exit(-1);
 					}
-					if( !strcmp( msg,"exit" ) ) {
+					if( !strcmp( msg, "exit" ) ) {
 
 						goto quit;
 					}
